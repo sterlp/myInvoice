@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>myInvoice </title>
+        <!-- Bootstrap -->
+        <link href="resources/lib/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link href="resources/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+        <!-- Custom Theme Style -->
+        <link href="resources/lib/gentelella-3.8/css/custom.css" rel="stylesheet">
+    </head>
+
+    <body class="nav-md" ng-app="myInvoice">
+        <div class="container body">
+            <div class="main_container">
+
+                <invoice-menu></invoice-menu>
+
+                <!-- top navigation -->
+                <div class="top_nav">
+                    <div class="nav_menu">
+                        <nav>
+                            <div class="nav toggle">
+                                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                            </div>
+
+                            <!-- NAV TOP SPACE -->
+                        </nav>
+                    </div>
+                </div>
+                <!-- /top navigation -->
+
+                <!-- page content -->
+                <div class="right_col" role="main">
+                    <ui-view></ui-view>
+                </div>
+                <!-- /page content -->
+
+            </div>
+        </div>
+
+        <!-- jQuery -->
+        <script src="resources/lib/jquery-3.2.1.min.js"></script>
+        <!-- Bootstrap 
+        <script src="resources/lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+        -->
+        <!-- FastClick -->
+        <script src="resources/lib/fastclick/fastclick.js"></script>
+
+        <!-- Custom Theme Scripts 
+        <script src="resources/lib/gentelella-3.8/js/custom.js"></script>
+        -->
+        
+        <script src="http://unpkg.com/angular@1.6.1/angular.js"></script>
+        <script src="http://unpkg.com/angular-ui-router@1.0.0-rc.1/release/angular-ui-router.js"></script>
+        <!-- 
+        <script src="resources/lib/angular-1.6.4/angular.min.js"></script>
+        <script src="resources/lib/angular-1.6.4/angular-route.min.js"></script>
+        <script src="resources/lib/angular-1.6.4/angular-resource.min.js"></script>
+        <script src="resources/lib/angular-ui-router-0.4.2.min.js"></script>
+        -->
+        <script src="resources/app/app.js"></script>
+    </body>
+</html>
