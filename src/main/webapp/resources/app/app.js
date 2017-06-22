@@ -5,9 +5,14 @@
          'angular-loading-bar', 'core-ui']);
     
     // https://github.com/angular-ui/ui-router/wiki
-    app.config(['$urlRouterProvider', '$stateProvider', '$breadcrumbProvider', 
-        function($urlRouterProvider, $stateProvider, $breadcrumbProvider) {
+    app.value('baseUrl', base)
+       .config(['$urlRouterProvider', '$stateProvider', '$breadcrumbProvider', '$ocLazyLoadProvider', 
+        function($urlRouterProvider, $stateProvider, $breadcrumbProvider, $ocLazyLoadProvider) {
             
+            $ocLazyLoadProvider.config({
+                // Set to true if you want to see what and when is dynamically loaded
+                debug: true
+              });
             $breadcrumbProvider.setOptions({
                 prefixStateName: 'app.home',
                 includeAbstract: true,
@@ -37,6 +42,17 @@
                 component: 'invoiceList',
                 ncyBreadcrumb: {
                     label: 'Invoice List'
+                },
+                resolvePolicy: { deps: { when: "EAGER" } }, // LOAD `deps` RESOLVE EAGERLY
+                resolve: {
+                  deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load(
+                      {
+                        name: "lazyInvoices",
+                        files: [base + "invoice/invoices.js"]
+                      }
+                    );
+                  }]
                 }
             });
             
@@ -50,16 +66,6 @@
                 console.info("homeComponent loaded ...");
             },
             templateUrl: base + 'home/home.html'
-        })
-        .component('invoiceList', {
-            bindings: {
-                'title': '='
-            },
-            controller: function () {
-                // this.title is available
-                console.info("invoiceListComponent loaded ...");
-            },
-            templateUrl: base + 'invoice/invoice_list.html'
         })
         ;
 })();
