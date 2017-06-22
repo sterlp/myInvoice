@@ -1,0 +1,13 @@
+{
+    "elements": {
+        "navbar": {},
+        "ncy-breadcrumb": {},
+        "ui-view": {}
+    },
+    "attributes": {
+        "breadcrumb": {
+            "context": "ol"
+        },
+        "ui-sref": {}
+    }
+}

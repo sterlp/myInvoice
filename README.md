@@ -15,4 +15,4 @@ alternative:
 
 # Tools
 * AngularJS lazy loading: https://oclazyload.readme.io/
-# Loading bar http://chieffancypants.github.io/angular-loading-bar/
+* Loading bar http://chieffancypants.github.io/angular-loading-bar/

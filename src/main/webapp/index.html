@@ -5,62 +5,38 @@
         <!-- Meta, title, CSS, favicons, etc. -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>myInvoice </title>
-        <!-- Bootstrap -->
-        <link href="resources/lib/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
-        <!-- Font Awesome -->
-        <link href="resources/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>myInvoice</title>
 
-        <!-- Custom Theme Style -->
-        <link href="resources/lib/gentelella-3.8/css/custom.css" rel="stylesheet">
+        <link href="webjars/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="resources/css/core-ui-style.min.css" rel="stylesheet">
     </head>
+    <!-- BODY options, add following classes to body to change options
+    
+            // Header options
+            1. '.header-fixed'					- Fixed Header
+    
+            // Sidebar options
+            1. '.sidebar-fixed'					- Fixed Sidebar
+            2. '.sidebar-hidden'				- Hidden Sidebar
+            3. '.sidebar-off-canvas'                            - Off Canvas Sidebar
+            4. '.sidebar-minimized'                             - Minimized Sidebar (Only icons)
+            5. '.sidebar-compact'                               - Compact Sidebar
+    
+            // Aside options
+            1. '.aside-menu-fixed'                              - Fixed Aside Menu
+            2. '.aside-menu-hidden'                             - Hidden Aside Menu
+            3. '.aside-menu-off-canvas'                         - Off Canvas Aside Menu
+    
+            // Footer options
+            1. 'footer-fixed'					- Fixed footer
+    -->
 
-    <body class="nav-md" ng-app="myInvoice">
-        <div class="container body">
-            <div class="main_container">
-
-                <invoice-menu></invoice-menu>
-
-                <!-- top navigation -->
-                <div class="top_nav">
-                    <div class="nav_menu">
-                        <nav>
-                            <div class="nav toggle">
-                                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-                            </div>
-
-                            <!-- NAV TOP SPACE -->
-                        </nav>
-                    </div>
-                </div>
-                <!-- /top navigation -->
-
-                <!-- page content -->
-                <div class="right_col" role="main">
-                    <ui-view></ui-view>
-                </div>
-                <!-- /page content -->
-
-            </div>
-        </div>
-
-        <!-- jQuery -->
-        <script src="resources/lib/jquery-3.2.1.min.js"></script>
-        <!-- Bootstrap 
-        <script src="resources/lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-        -->
-        <!-- FastClick -->
-        <script src="resources/lib/fastclick/fastclick.js"></script>
-
-        <!-- Custom Theme Scripts 
-        <script src="resources/lib/gentelella-3.8/js/custom.js"></script>
-        -->
+    <body ng-app="myInvoice" class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
         
-        <script src="resources/lib/angular-1.6.4/angular.min.js"></script>
-        <script src="resources/lib/angular-1.6.4/angular-resource.min.js"></script>
-        <script src="resources/lib/angular-ui-router-1.0.0-rc.1.min.js"></script>
-        
+        <ui-view></ui-view>
+
+        <script src="resources/lib/js-assets.min.js"></script>
         <script src="resources/app/app.js"></script>
     </body>
 </html>

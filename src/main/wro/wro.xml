@@ -1,0 +1,24 @@
+<groups xmlns="http://www.isdc.ro/wro">
+    <group name="js-assets.min">
+        <js minimize="false">webjar:jquery.min.js</js>
+        <js minimize="false">webjar:tether.min.js</js>
+        <js minimize="false">webjar:bootstrap.min.js</js>
+        <js minimize="false">webjar:angular.min.js</js>
+        <js minimize="false">webjar:angular-animate.min.js</js>
+        <js minimize="false">webjar:angular-aria.min.js</js>
+        <js minimize="false">webjar:angular-route.min.js</js>
+        <js minimize="false">webjar:angular-resource.min.js</js>
+        <js minimize="false">webjar:angular-cookies.min.js</js>
+        <js minimize="false">webjar:angular-ui-router.min.js</js>
+        
+        <js minimize="false">webjar:dist/angular-breadcrumb.js</js>
+        <js minimize="false">webjar:loading-bar.js</js>
+        <js minimize="false">webjar:ocLazyLoad.js</js>
+        <js>file:@project.basedir@/src/main/wro/lib/core-ui-directives.js</js>
+    </group>
+    
+    <group name="core-ui-style.min">
+        <css>file:@project.basedir@/src/main/wro/css/core-ui-style.css</css>
+        <css>file:@project.basedir@/src/main/wro/css/simple-line-icons.css</css>
+    </group>
+</groups>
