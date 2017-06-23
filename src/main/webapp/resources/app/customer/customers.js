@@ -15,7 +15,7 @@
     app.component('customerList', {
         controller: ['CustomerService', function (CustomerService) {
             var that = this;
-            
+            console.info('customerList open ...');
             this.reload = function() {
                 CustomerService.list().then(function(data) {
                     that.customers = data;
@@ -28,6 +28,26 @@
         }],
         templateUrl: ['appConfig', function(appConfig) {
             return appConfig.html('customer/customers.html');
+        }]
+    });
+    
+    
+    app.component('customer', {
+        bindings: {
+            customerId: '@'
+        },
+        controller: ['CustomerService', '$breadcrumb', function (CustomerService, $breadcrumb) {
+            var that = this;
+            this.$onInit = function() {
+                console.info('customer init: ', this.customerId);
+                
+            };
+            console.info('customer open ...', $breadcrumb);
+            $breadcrumb.$getLastViewScope().pageLabel = "Test";
+
+        }],
+        templateUrl: ['appConfig', function(appConfig) {
+            return appConfig.html('customer/customer.html');
         }]
     });
 })(angular);
