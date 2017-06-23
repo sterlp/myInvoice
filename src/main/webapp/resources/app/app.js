@@ -1,18 +1,26 @@
 (function() {
-    var base = 'resources/app/';
     var app = angular.module('myInvoice', 
         ['ui.router', 'oc.lazyLoad', 'ncy-angular-breadcrumb',
          'angular-loading-bar', 'core-ui']);
     
     // https://github.com/angular-ui/ui-router/wiki
-    app.value('baseUrl', base)
-       .config(['$urlRouterProvider', '$stateProvider', '$breadcrumbProvider', '$ocLazyLoadProvider', 
-        function($urlRouterProvider, $stateProvider, $breadcrumbProvider, $ocLazyLoadProvider) {
+    app.constant('appConfig', {
+            baseUrl: 'resources/app/',
+            apiUrl: 'api/',
+            html : function(val) {
+                return this.baseUrl + val;
+            },
+            rest : function (val) {
+                return this.apiUrl + val;
+            }
+        })
+        .config(['appConfig', '$urlRouterProvider', '$stateProvider', '$breadcrumbProvider', '$ocLazyLoadProvider', 
+            function(appConfig, $urlRouterProvider, $stateProvider, $breadcrumbProvider, $ocLazyLoadProvider) {
             
             $ocLazyLoadProvider.config({
                 // Set to true if you want to see what and when is dynamically loaded
                 debug: true
-              });
+            });
             $breadcrumbProvider.setOptions({
                 prefixStateName: 'app.home',
                 includeAbstract: true,
@@ -23,7 +31,7 @@
             // URL States normal ...
             $stateProvider.state('app', {
                 abstract: true,
-                templateUrl: base + 'layouts/full.html',
+                templateUrl: appConfig.baseUrl + 'layouts/full.html',
                 ncyBreadcrumb: {
                     label: 'Root',
                     skip: true
@@ -32,9 +40,25 @@
             .state('app.home', {
                 url: '/home',
                 component: 'invoiceHome',
-                params: {title: 'Home'},
                 ncyBreadcrumb: {
                     label: 'Home'
+                }
+            })
+            .state('app.customers', {
+                url: '/customers',
+                component: 'customerList',
+                ncyBreadcrumb: {
+                    label: 'Customers'
+                },
+                resolvePolicy: { deps: { when: "EAGER" } }, // LOAD `deps` RESOLVE EAGERLY
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                                name: "lazyCustomers",
+                                files: [appConfig.baseUrl + "customer/customers.js"]
+                            }
+                        );
+                    }]
                 }
             })
             .state('app.invoices', {
@@ -45,14 +69,14 @@
                 },
                 resolvePolicy: { deps: { when: "EAGER" } }, // LOAD `deps` RESOLVE EAGERLY
                 resolve: {
-                  deps: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    return $ocLazyLoad.load(
-                      {
-                        name: "lazyInvoices",
-                        files: [base + "invoice/invoices.js"]
-                      }
-                    );
-                  }]
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                      return $ocLazyLoad.load(
+                        {
+                          name: "lazyInvoices",
+                          files: [appConfig.baseUrl + "invoice/invoices.js"]
+                        }
+                      );
+                    }]
                 }
             });
             
@@ -65,7 +89,21 @@
                 // this.title is available
                 console.info("homeComponent loaded ...");
             },
-            templateUrl: base + 'home/home.html'
-        })
-        ;
+            templateUrl: ['appConfig', function(appConfig) {
+                return appConfig.html('home/home.html');
+            }]
+        });
 })();
+/*
+ resolvePolicy: { deps: { when: "EAGER" } }, // LOAD `deps` RESOLVE EAGERLY
+    resolve: {
+      deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+        return $ocLazyLoad.load(
+          {
+            name: "lazyInvoices",
+            files: [appConfig.baseUrl + "invoice/invoices.js"]
+          }
+        );
+      }]
+    }
+ */

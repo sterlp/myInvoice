@@ -1,5 +1,6 @@
 package org.sterl.myinvoice.service.customer.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,6 +22,7 @@ public class CustomerBE {
 
     @Id
     @GeneratedValue
+    @Column(name="customer_id")
     private Long id;
     @Size(max = 128)
     private String title;

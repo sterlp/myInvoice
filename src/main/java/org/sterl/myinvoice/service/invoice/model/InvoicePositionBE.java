@@ -40,7 +40,7 @@ public class InvoicePositionBE {
     @NotNull
     private BigDecimal tax = new BigDecimal(0.19f);
 
-    /** the netto price of something */
+    /** The netto price of something */
     @Column(precision = 9, scale = 2)
     @NotNull
     private BigDecimal price = BigDecimal.ZERO;

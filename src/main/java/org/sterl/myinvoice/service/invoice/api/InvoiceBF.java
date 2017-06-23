@@ -3,6 +3,7 @@ package org.sterl.myinvoice.service.invoice.api;
 
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -21,6 +22,6 @@ public class InvoiceBF {
     
     @GET
     public List<InvoiceBE> get() {
-        return Arrays.asList(new InvoiceBE(), new InvoiceBE());
+        return invoiceDao.findAll();
     }
 }

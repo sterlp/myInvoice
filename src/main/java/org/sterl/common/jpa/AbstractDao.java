@@ -16,10 +16,24 @@ public abstract class AbstractDao<IdType, EntityType> {
     public AbstractDao(Class<EntityType> entity) {
         this.entity = entity;
     }
+    
+    public void create(EntityType entity) {
+        em.persist(entity);
+    }
+    
+    public EntityType update(EntityType updateCreate) {
+        return em.merge(updateCreate);
+    }
+    
     public List<EntityType> findAll() {
         return findAll(null).getData();
     }
 
+    /**
+     * Search using the given query, if the query is null it is ignored
+     * at all an all data is returned!
+     * @return PageResult of the given entity, never null
+     */ 
     public PageResult<EntityType> findAll(Query query) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<EntityType> cq = cb.createQuery(entity);
@@ -28,8 +42,9 @@ public abstract class AbstractDao<IdType, EntityType> {
         TypedQuery<EntityType> allQuery = em.createQuery(all);
         
         if (query != null) {
+            if (query.getMaxResults() == null) query.setMaxResults(Query.DEFAULT_MAX);
             if (query.getFirstResult() != null) allQuery.setFirstResult(query.getFirstResult());
-            if (query.getMaxResults() != null) allQuery.setMaxResults(query.getMaxResults());
+            allQuery.setMaxResults(query.getMaxResults());
         }
 
         return new PageResult(allQuery.getResultList(), query);

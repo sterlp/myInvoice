@@ -18,15 +18,15 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import org.sterl.myinvoice.service.customer.model.CustomerBE;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "INVOICE")
-@Data
+@Data @NoArgsConstructor 
 public class InvoiceBE {
 
     @Id

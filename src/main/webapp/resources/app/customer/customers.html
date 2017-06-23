@@ -1,0 +1,23 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <button class="btn btn-sm btn-primary"><i class="icon-user-follow"></i> New Customer</button>
+        </div>
+        <div class="card-block">
+            <h2>Customers</h2>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="c in customers track by c.id">
+                        <td> {{ c.name }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
