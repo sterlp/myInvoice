@@ -1,17 +1,26 @@
-(function() {
+(function(angular) {
     var app = angular.module('myInvoice', 
         ['ui.router', 'oc.lazyLoad', 'ncy-angular-breadcrumb',
          'angular-loading-bar', 'core-ui']);
     
-    // https://github.com/angular-ui/ui-router/wiki
     app.constant('appConfig', {
             baseUrl: 'resources/app/',
             apiUrl: 'api/',
             html : function(val) {
                 return this.baseUrl + val;
             },
-            rest : function (val) {
-                return this.apiUrl + val;
+            rest : function () {
+                var result = this.apiUrl,
+                    i, val, split = '';
+
+                for (i = 0; i < arguments.length; ++i) {
+                    val = arguments[i];
+                    if (angular.isDefined(val)) {
+                        result += split + arguments[i];
+                        split = '/';
+                    }
+                }
+                return result;
             }
         })
         .config(['appConfig', '$urlRouterProvider', '$stateProvider', '$breadcrumbProvider', '$ocLazyLoadProvider', 
@@ -33,7 +42,8 @@
                     files: [appConfig.html("customer/customers.js")]
                 });
             }];
-            
+        
+            // https://github.com/angular-ui/ui-router/wiki
             $urlRouterProvider.otherwise('/home');
             // URL States normal ...
             $stateProvider.state('app', {
@@ -57,20 +67,20 @@
                 ncyBreadcrumb: {
                     label: 'Customers'
                 },
-                //resolvePolicy: { deps: { when: "EAGER" } },
-                //resolve: { deps: lazyLoadCustomer }
+                resolvePolicy: { deps: { when: "EAGER" } },
+                resolve: { deps: lazyLoadCustomer }
             })
             .state('app.customer', {
                 url: '/customer/:customerId',
                 component: 'customer',
                 ncyBreadcrumb: {
                     parent: 'app.customers',
-                    label: '{{ pageLabel || "Customer" }}'
+                    label: '{{ pageLabel }}'
                 },
-                //resolvePolicy: { deps: { when: "EAGER" } },
+                resolvePolicy: { deps: { when: "EAGER" } },
                 resolve: { 
                     customerId: function($stateParams) { return $stateParams.customerId; },
-                    //deps: lazyLoadCustomer 
+                    deps: lazyLoadCustomer 
                 }
             })
             .state('app.invoices', {
@@ -102,7 +112,7 @@
                 return appConfig.html('home/home.html');
             }]
         });
-})();
+})(angular);
 /*
  resolvePolicy: { deps: { when: "EAGER" } }, // LOAD `deps` RESOLVE EAGERLY
     resolve: {

@@ -6,9 +6,23 @@
         this.list = function() {
             return $http({
                 method: 'GET',
-                url: appConfig.rest('customer'),
-                //params: 'limit=10, sort_by=created:desc'
+                url: appConfig.rest('customer')
              });
+        };
+        this.get = function (customerId) {
+            if (!customerId) throw 'No customer id given';
+            return $http({
+                method: 'GET',
+                url: appConfig.rest('customer/' + customerId)
+            });
+        };
+        this.save = function (customer) {
+            if (!customer) throw 'No customer given to create';
+            return $http({
+                method: customer.id ? 'PUT' : 'POST',
+                url: appConfig.rest('customer', customer.id),
+                data: customer
+            });
         };
     }]);
 
@@ -17,14 +31,14 @@
             var that = this;
             console.info('customerList open ...');
             this.reload = function() {
-                CustomerService.list().then(function(data) {
-                    that.customers = data;
+                CustomerService.list().then(function(result) {
+                    that.customers = result.data;
                 }, function(error) {
                     that.customers = null;
                     console.warn(error);
                 });
             };
-            if (!this.customers) this.reload();
+            this.reload();
         }],
         templateUrl: ['appConfig', function(appConfig) {
             return appConfig.html('customer/customers.html');
@@ -36,15 +50,26 @@
         bindings: {
             customerId: '@'
         },
-        controller: ['CustomerService', '$breadcrumb', function (CustomerService, $breadcrumb) {
+        controller: ['CustomerService', '$breadcrumb', function ($customer, $breadcrumb) {
             var that = this;
+            $breadcrumb.$getLastViewScope().pageLabel = "Customer";
+
             this.$onInit = function() {
                 console.info('customer init: ', this.customerId);
-                
-            };
-            console.info('customer open ...', $breadcrumb);
-            $breadcrumb.$getLastViewScope().pageLabel = "Test";
+                if (this.customerId) this.reload(this.customerId);
+                else $breadcrumb.$getLastViewScope().pageLabel = "New Customer";
 
+            };
+            this.reload = function () {
+                $customer.get(this.customerId).then(updateCustomer);
+            };
+            this.save = function () {
+                $customer.save(this.customer).then(updateCustomer);
+            };
+            function updateCustomer(result) {
+                that.customer = result.data;
+                $breadcrumb.$getLastViewScope().pageLabel = that.customer.firstName + " " + that.customer.name; 
+            };
         }],
         templateUrl: ['appConfig', function(appConfig) {
             return appConfig.html('customer/customer.html');

@@ -16,6 +16,14 @@ public abstract class AbstractDao<IdType, EntityType> {
     public AbstractDao(Class<EntityType> entity) {
         this.entity = entity;
     }
+    /**
+     * @param id the id of the entity, if null result is null too
+     * @return the found entity or null if not found
+     */
+    public EntityType get(IdType id) {
+        if (id == null) return null;
+        return em.find(entity, id);
+    }
     
     public void create(EntityType entity) {
         em.persist(entity);
