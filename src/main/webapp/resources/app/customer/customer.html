@@ -1,12 +1,14 @@
 <div class="animated fadeIn">
+    <!-- actionbar -->
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-block">
+                    <button class="btn btn-sm btn-link" onclick="history.back()"><i class="icon-arrow-left"></i></button>
                     <button ng-if="$ctrl.customer.id" type="submit" class="btn btn-sm btn-success"><i class="icon-doc"></i> New Invoice</button>
                     
                     <div class="pull-right">
-                        <button ng-click="$ctrl.save()" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o" aria-hidden="true"></i> 
+                        <button ng-click="$ctrl.save()" ng-disabled="!$ctrl.customer" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o" aria-hidden="true"></i> 
                             {{ $ctrl.customer.id ? 'Save changes' : 'Create Customer' }}
                         </button>
                         <button ng-if="$ctrl.customer.id" ng-click="$ctrl.reload()" class="btn btn-default btn-sm" type="button"><i class="icon-reload"></i> Reload</button>
@@ -15,6 +17,10 @@
             </div>
         </div>
     </div>
+        
+    <jsui-messages></jsui-messages>
+    
+
     <div class="row">
         <div class="col-md-6">
             <div class="card">
@@ -37,7 +43,7 @@
                     <div class="form-group row">
                         <label class="col-form-label col-md-2">Name</label>
                         <div class="col-md-10">
-                            <input ng-model="$ctrl.customer.name" type="text" class="form-control" placeholder="Enter customer name">
+                            <input ng-model="$ctrl.customer.name" jsui-validate="CustomerBE.name" type="text" class="form-control" placeholder="Enter customer name">
                         </div>
                     </div>
                 </div>
@@ -71,7 +77,36 @@
                             <input ng-model="$ctrl.customer.country" type="text" class="form-control" placeholder="Country">
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Contact Data</div>
+                <div class="card-block">
                     
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-2">Email</label>
+                                <div class="col-md-10">
+                                    <input ng-model="$ctrl.customer.contactData.email" type="text" class="form-control" placeholder="Customer email">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-2">Fax</label>
+                                <div class="col-md-10">
+                                    <input ng-model="$ctrl.customer.contactData.fax" type="text" class="form-control" placeholder="Customer fax">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

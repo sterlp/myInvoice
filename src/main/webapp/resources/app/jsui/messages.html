@@ -1,0 +1,5 @@
+<div ng-if="$ctrl.show()" class="alert alert-warning" 
+     ng-class="{'alert-warning': $ctrl.state.code >= 400 && $ctrl.state.code < 500,
+                'alert-danger': $ctrl.state.code >= 500}" role="alert">
+    <strong><i class="icon-ban"></i> {{ $ctrl.state.code }} </strong>{{ $ctrl.state.message }}
+</div>

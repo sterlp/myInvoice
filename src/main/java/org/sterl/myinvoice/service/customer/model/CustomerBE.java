@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -24,7 +25,7 @@ public class CustomerBE {
     @GeneratedValue
     @Column(name="customer_id")
     private Long id;
-    @Size(max = 128)
+    @Size(max = 64)
     private String title;
     @NotNull @Size(min = 1, max = 512)
     private String name;
@@ -40,6 +41,7 @@ public class CustomerBE {
     private String country;
     
     @Getter(AccessLevel.NONE)
+    @Valid
     private ContactDataBE contactData;
     
     @PrePersist @PreUpdate

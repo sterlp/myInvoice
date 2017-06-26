@@ -3,6 +3,7 @@ package org.sterl.myinvoice.service.customer.api;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -36,7 +37,7 @@ public class CustomerBF {
     }
     
     @POST
-    public Response create(@Context UriInfo uri, CustomerBE customer) {
+    public Response create(@Context UriInfo uri, @Valid CustomerBE customer) {
         customer.setId(null);
         customerDao.create(customer);
         return Response

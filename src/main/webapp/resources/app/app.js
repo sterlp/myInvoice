@@ -1,7 +1,7 @@
 (function(angular) {
     var app = angular.module('myInvoice', 
         ['ui.router', 'oc.lazyLoad', 'ncy-angular-breadcrumb',
-         'angular-loading-bar', 'core-ui']);
+         'angular-loading-bar', 'core-ui', 'JsUI']);
     
     app.constant('appConfig', {
             baseUrl: 'resources/app/',
@@ -113,16 +113,3 @@
             }]
         });
 })(angular);
-/*
- resolvePolicy: { deps: { when: "EAGER" } }, // LOAD `deps` RESOLVE EAGERLY
-    resolve: {
-      deps: ['$ocLazyLoad', function ($ocLazyLoad) {
-        return $ocLazyLoad.load(
-          {
-            name: "lazyInvoices",
-            files: [appConfig.baseUrl + "invoice/invoices.js"]
-          }
-        );
-      }]
-    }
- */
