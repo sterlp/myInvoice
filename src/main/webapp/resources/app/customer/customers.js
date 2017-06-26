@@ -61,7 +61,9 @@
                 else $breadcrumb.$getLastViewScope().pageLabel = "New Customer";
             };
             this.reload = function () {
-                $customer.get(this.customerId).then(updateCustomer);
+                $customer.get(this.customerId).then(updateCustomer, function (error) {
+                    if (error.status === 404) $state.transitionTo('app.customers', null, {notify: true, location: 'replace'});
+                });
             };
             this.save = function () {
                 $customer.save(this.customer).then(updateCustomer);
@@ -69,7 +71,7 @@
             function updateCustomer(result) {
                 that.customer = result.data;
                 $breadcrumb.$getLastViewScope().pageLabel = that.customer.firstName + " " + that.customer.name;
-                $state.transitionTo('app.customer', {customerId: that.customer.id}, {notify: false, location: 'replace'});
+                // TODO $state.transitionTo('app.customer', {customerId: that.customer.id}, {notify: false, location: 'replace'});
             };
         }],
         templateUrl: ['appConfig', function(appConfig) {

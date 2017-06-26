@@ -93,7 +93,7 @@
             state.code = null;
             state.message = null;
             state.hasValidationErrors = false;
-            angular.forEach(state.validationErrors, function(key, value) {
+            angular.forEach(state.validationErrors, function(value, key) {
                 delete state.validationErrors[key];
             });
             $rootScope.$broadcast('jsuiValidation', null);
