@@ -5,3 +5,4 @@
 /.settings
 /src/main/webapp/resources/css/core-ui-style.min.css
 /nbproject/
+phantomjsdriver.log

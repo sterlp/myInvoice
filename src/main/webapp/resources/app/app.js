@@ -23,8 +23,14 @@
                 return result;
             }
         })
-        .config(['appConfig', '$urlRouterProvider', '$stateProvider', '$breadcrumbProvider', '$ocLazyLoadProvider', 
-            function(appConfig, $urlRouterProvider, $stateProvider, $breadcrumbProvider, $ocLazyLoadProvider) {
+        .config(['appConfig', '$urlRouterProvider', '$stateProvider', '$breadcrumbProvider', '$ocLazyLoadProvider', '$jsuiStateProvider',
+            function(appConfig, $urlRouterProvider, $stateProvider, $breadcrumbProvider, $ocLazyLoadProvider, $jsuiStateProvider) {
+                
+            $jsuiStateProvider.config({
+                mapping: {
+                    customer: 'CustomerBE'
+                }
+            });
             
             $ocLazyLoadProvider.config({
                 // Set to true if you want to see what and when is dynamically loaded

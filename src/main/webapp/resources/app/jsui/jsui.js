@@ -28,33 +28,38 @@
                     $scope.path = at.ngModel;
                     if ($scope.path.startsWith('$ctrl.')) {
                         $scope.path = $scope.path.substring(6, $scope.path.length);
-                        console.debug("jsuiValidate assuming path", $scope.path, " for", el, at);
+                        console.debug("jsuiValidate assuming path:", $scope.path, " for ngModel: ", at.ngModel);
                     }
                 }
                 if (!$scope.path || $scope.path === "") {
                     throw "jsuiValidate has no path to attach the validation! " + el + " " + at;
                 }
+                // mapping code
+                var indexOfDot = $scope.path.indexOf('.');
+                if (indexOfDot > 1) {
+                    var map = $scope.path.substring(0, indexOfDot);
+                    map = $jsuiState.map(map);
+                    if (map) {
+                        $scope.path = map + $scope.path.substring(indexOfDot, $scope.path.length);
+                        console.debug("jsuiValidate mapped path to:", $scope.path);
+                    }
+                }
+                
                 $scope.$on('jsuiValidation', function(e, validationErrors) {
-                    console.info('jsuiValidate $scope:', $scope.path, ' $jsuiState:', $jsuiState);
-
                     var validationObj = (validationErrors && validationErrors[$scope.path]) || null;
                     if (validationErrors && validationObj && !showingError) {
-                        console.debug("show error...", $scope, el ,at);
-                        el.addClass('form-control-danger');
-                        el.closest('.form-group').addClass('has-danger');
-
-                        if (validationObj.message) {
-                            el.attr('title', validationObj.message);
-                            el.attr('data-toggle', 'tooltip');
-                            el.tooltip();
-                        }
                         showingError = true;
+                        el.addClass('form-control-danger');
+			el.closest('.form-group').addClass('has-danger');
+                        if (validationObj.message) {
+                            el.tooltip({'title': validationObj.message});
+                        }
+                        
                     } else if (showingError && !validationErrors) {
-                        console.info("hide error...");
-                        el.removeClass('form-control-danger');
-                        el.closest('.form-group').removeClass('has-danger');
-                        el.removeAttr('title');
                         showingError = false;
+                        el.removeClass('form-control-danger');
+                        el.tooltip('dispose');
+                        el.closest('.form-group').removeClass('has-danger');
                     }
                 });
             }
@@ -73,51 +78,85 @@
         templateUrl: 'resources/app/jsui/messages.html'
     });
     
+    function JsuiState($rootScope, mapping) {
+        this.state = {loading: false, validationErrors: {}, code: 200, message: null, hasValidationErrors: false};
+        this.$rootScope = $rootScope;
+        this.mapping = mapping;
+        if (!$rootScope) throw 'Root scope with $broadcast method required.';
+    }
+    JsuiState.prototype.map = function(toMap) {
+        if (!this.mapping) return null;
+        if (!toMap) return null;
+        return this.mapping[toMap] || this.mapping[toMap.charAt(0).toUpperCase() + toMap.slice(1)];
+    };
+    JsuiState.prototype.addMapping = function(key, value) {
+        if (!this.mapping) this.mapping = {};
+        this.mapping[key] = value;
+    };
+    JsuiState.prototype.clearErrors = function(code, message) {
+        var state = this.state;
+        state.code = code || null;
+        state.message = message || null;
+        state.hasValidationErrors = false;
+        angular.forEach(state.validationErrors, function(value, key) {
+            delete state.validationErrors[key];
+        });
+        this.$rootScope.$broadcast('jsuiValidation', null);
+    };
+    JsuiState.prototype.getState = function(field) {
+        if (field) return this.state.validationErrors[field] || null;
+        return this.state;
+    };
+    JsuiState.prototype.hasValidationErrors = function() {
+        return this.state.hasValidationErrors;
+    };
+    JsuiState.prototype.isLoading = function() {
+        return this.state.loading;
+    };
+    JsuiState.prototype.getErrorMessage = function () {
+        return this.state.message;
+    };
+    JsuiState.prototype.getErrorCode = function () {
+        return this.state.code;
+    };
+    /**
+     * @param validationErrors 
+     *  <pre>
+     *   {
+     *      "mapping.name" : {
+     *          "message" : "message to show",
+     *          "path": "mapping.name",
+     *          "entity": "mapping"
+     *          "invalidValue": "foo"
+     *      }
+     *   }
+     *  </pre> 
+     */
+    JsuiState.prototype._setState = function(code, message, validationErrors) {
+        if (validationErrors) {
+	        this.state.code = code;
+	        this.state.message = message;
+            angular.extend(this.state.validationErrors, validationErrors);
+            this.state.hasValidationErrors = true;
+            this.$rootScope.$broadcast('jsuiValidation', this.state.validationErrors);
+        } else {
+            this.clearErrors(code, message);
+        }
+    };
+    JsuiState.prototype._setLoading = function(val) {
+        this.state.loading = val;
+    };
     
-    jsui.service('$jsuiState', ['$rootScope', function($rootScope) {
-        var state = {loading: false, validationErrors: {}, code: 200, message: null, hasValidationErrors: false};
-
-        this.getState = function () {
-            return state;
+    jsui.provider('$jsuiState', function() {
+        var mapping = null;
+        
+        this.config = function(config) {
+            if (config && config.mapping) mapping = config.mapping;
         };
-        this.hasValidationErrors = function() {
-            return state.hasValidationErrors;
-        };
-        this.getValidationErrors = function() {
-            return state.validationErrors;
-        };
-        this.isLoading = function() {
-            return state.loading;
-        };
-        this.clearErrors = function() {
-            state.code = null;
-            state.message = null;
-            state.hasValidationErrors = false;
-            angular.forEach(state.validationErrors, function(value, key) {
-                delete state.validationErrors[key];
-            });
-            $rootScope.$broadcast('jsuiValidation', null);
-        };
-        this.getErrorMessage = function () {
-            return state.message;
-        };
-        this.getErrorCode = function () {
-            return state.code;
-        };
-        this._setState = function(code, message, validationErrors) {
-            state.code = code;
-            state.message = message;
-            if (validationErrors) {
-                angular.extend(state.validationErrors, validationErrors);
-                state.hasValidationErrors = true;
-                $rootScope.$broadcast('jsuiValidation', state.validationErrors);
-            }
-        };
-        this._setLoading = function(val) {
-            state.loading = val;
-        };
-        $rootScope.$jsuiState = this; // register service to root scope
-    }]);
+        this.$get =['$rootScope', function($rootScope) {
+            return new JsuiState($rootScope, mapping);
+        }];
+    });
 
     jsui.factory('jsuiHttpInterceptor', ['$q', '$jsuiState',
         function($q, $jsuiState) {
