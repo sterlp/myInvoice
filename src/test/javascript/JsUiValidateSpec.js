@@ -5,6 +5,8 @@ describe('Test JSUI validation', function () {
         $rootScope,
         $jsuiState,
         defaultError;
+        
+    //! phatomJS doesn't support startsWith
 
     // Load the myApp module, which contains the directive
     beforeEach(module('JsUI'));
@@ -45,7 +47,6 @@ describe('Test JSUI validation', function () {
         expect($jsuiState.hasValidationErrors()).toBe(false);
         expect($jsuiState.getState('foo.name')).toBe(null);
     });
-			
 
     it('verify validation by name using class', function () {
         // Compile a piece of HTML containing the directive
@@ -63,5 +64,24 @@ describe('Test JSUI validation', function () {
         expect($jsuiState.hasValidationErrors()).toBe(false);
         expect($jsuiState.getState('foo.name')).toBe(null);
         expect(element.html()).not.toContain("form-control-danger");
+    });
+    
+    it('verify default using ngModel', function () {
+        var element = $compile('<div><input ng-model="foo.name" jsui-validate></div>')($rootScope);
+        expect(element.html()).not.toContain("form-control-danger");
+        $jsuiState._setState(400, null, defaultError);
+        $rootScope.$digest();
+        // Check that the compiled element contains the templated content
+        expect(element.html()).toContain("form-control-danger");
+    });
+    
+    it('verify ngModel re-mapping', function () {
+        $jsuiState.addMapping('leberkese', 'foo'); // leberkese -> foo
+        var element = $compile('<div><input ng-model="leberkese.name" jsui-validate></div>')($rootScope);
+        expect(element.html()).not.toContain("form-control-danger");
+        $jsuiState._setState(400, null, defaultError);
+        $rootScope.$digest();
+        // Check that the compiled element contains the templated content
+        expect(element.html()).toContain("form-control-danger");
     });
 });

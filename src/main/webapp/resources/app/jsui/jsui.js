@@ -24,25 +24,26 @@
             },
             link: function ($scope, el, at) {
                 var showingError = false;
+                // assume mapping ...
                 if (!$scope.path && at.ngModel) {
                     $scope.path = at.ngModel;
-                    if ($scope.path.startsWith('$ctrl.')) {
+                    if ($scope.path.indexOf('$ctrl.') === 0) {
                         $scope.path = $scope.path.substring(6, $scope.path.length);
                         console.debug("jsuiValidate assuming path:", $scope.path, " for ngModel: ", at.ngModel);
                     }
-                }
+                    // mapping code
+                    var indexOfDot = $scope.path.indexOf('.');
+                    if (indexOfDot > 1) {
+                        var map = $scope.path.substring(0, indexOfDot);
+                        map = $jsuiState.map(map);
+                        if (map) {
+                            $scope.path = map + $scope.path.substring(indexOfDot, $scope.path.length);
+                            console.debug("jsuiValidate mapped path to:", $scope.path);
+                        }
+                    }
+                } // else take the scope one
                 if (!$scope.path || $scope.path === "") {
                     throw "jsuiValidate has no path to attach the validation! " + el + " " + at;
-                }
-                // mapping code
-                var indexOfDot = $scope.path.indexOf('.');
-                if (indexOfDot > 1) {
-                    var map = $scope.path.substring(0, indexOfDot);
-                    map = $jsuiState.map(map);
-                    if (map) {
-                        $scope.path = map + $scope.path.substring(indexOfDot, $scope.path.length);
-                        console.debug("jsuiValidate mapped path to:", $scope.path);
-                    }
                 }
                 
                 $scope.$on('jsuiValidation', function(e, validationErrors) {
@@ -50,7 +51,7 @@
                     if (validationErrors && validationObj && !showingError) {
                         showingError = true;
                         el.addClass('form-control-danger');
-			el.closest('.form-group').addClass('has-danger');
+                        el.closest('.form-group').addClass('has-danger');
                         if (validationObj.message) {
                             el.tooltip({'title': validationObj.message});
                         }
@@ -58,8 +59,8 @@
                     } else if (showingError && !validationErrors) {
                         showingError = false;
                         el.removeClass('form-control-danger');
-                        el.tooltip('dispose');
                         el.closest('.form-group').removeClass('has-danger');
+                        el.tooltip('dispose');
                     }
                 });
             }
