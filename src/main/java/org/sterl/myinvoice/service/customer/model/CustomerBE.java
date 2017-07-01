@@ -57,6 +57,7 @@ public class CustomerBE {
     
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "FK_CUSTOMER_TO_BANK_DETAILS"))
+    @Valid
     private List<BankDetailsBE> bankDetails = new ArrayList<>();
     
     @PrePersist @PreUpdate

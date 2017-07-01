@@ -20,6 +20,7 @@ import lombok.Data;
 public class InvoicePositionBE {
     @Id
     @GeneratedValue
+    @Column(name = "invoice_position_id")
     private Long id;
     
     @Size(max = 1024)
