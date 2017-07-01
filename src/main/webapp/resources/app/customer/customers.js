@@ -48,17 +48,23 @@
     
     app.component('customer', {
         bindings: {
-            customerId: '@'
+            customerId: '@',
+            customer: "=?"
         },
-        controller: ['CustomerService', '$state', '$breadcrumb', 
-        function ($customer, $state, $breadcrumb) {
+        controller: ['CustomerService', '$breadcrumb', '$state',
+        function ($customer, $breadcrumb, $state) {
             var that = this;
             $breadcrumb.$getLastViewScope().pageLabel = "Customer";
 
             this.$onInit = function() {
-                console.info('customer init: ', this.customerId);
-                if (this.customerId) this.reload(this.customerId);
-                else $breadcrumb.$getLastViewScope().pageLabel = "New Customer";
+                console.info('customer init: ', this.customerId, this.customer);
+                if (this.customerId) {
+                    if (!this.customer || this.customer.id != this.customerId) this.reload(this.customerId);
+                    else {
+                        // show provided customer ...
+                        updateCustomer(this.customer);
+                    }
+                } else $breadcrumb.$getLastViewScope().pageLabel = "New Customer";
             };
             this.reload = function () {
                 $customer.get(this.customerId).then(updateCustomer, function (error) {
@@ -66,12 +72,16 @@
                 });
             };
             this.save = function () {
-                $customer.save(this.customer).then(updateCustomer);
+                if (this.customer.id) $customer.save(this.customer).then(updateCustomer);
+                else {
+                    $customer.save(this.customer).then(function(result) {
+                        $state.go('app.customer', {customerId: result.data.id, customer: result.data}, {replace: true});
+                    });
+                }
             };
             function updateCustomer(result) {
-                that.customer = result.data;
+                that.customer = result.data ? result.data : result;
                 $breadcrumb.$getLastViewScope().pageLabel = that.customer.firstName + " " + that.customer.name;
-                // TODO $state.transitionTo('app.customer', {customerId: that.customer.id}, {notify: false, location: 'replace'});
             };
         }],
         templateUrl: ['appConfig', function(appConfig) {

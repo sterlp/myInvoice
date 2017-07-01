@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sterl.jsui.api;
 
-import java.util.Arrays;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -14,14 +8,9 @@ import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.glassfish.jersey.server.validation.ValidationConfig;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author sterlp
- */
 public class ServerExceptionTest {
 
     @Data @NoArgsConstructor @AllArgsConstructor

@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -31,21 +32,24 @@ public class InvoiceBE {
 
     @Id
     @GeneratedValue
+    @Column(name = "invoice_id")
     private Long id;
     
     @NotNull
     @Column(name = "invoice_number")
+    @Size(max = 255)
     private String invoiceNumber;
     
+    @Size(max = 255)
     private String name;
 
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "invoice_id", foreignKey = @ForeignKey(name = "FK_INVOICE_TO_INVOICE_POSITION"))
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     @Size(max = 50)
     private List<InvoicePositionBE> positions = new ArrayList<>();
     
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "FK_INVOICE_TO_CUSTOMER"))
     @NotNull
     private CustomerBE customer;
 

@@ -3,6 +3,7 @@ package org.sterl.myinvoice.service.invoice.api;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;

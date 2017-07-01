@@ -1,6 +1,7 @@
 {
     "elements": {
         "navbar": {},
+        "jsui-messages": {},
         "ncy-breadcrumb": {},
         "ui-view": {}
     },

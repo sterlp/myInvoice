@@ -78,6 +78,9 @@
             })
             .state('app.customer', {
                 url: '/customer/:customerId',
+                params: {
+                    customer: null
+                },
                 component: 'customer',
                 ncyBreadcrumb: {
                     parent: 'app.customers',
@@ -86,6 +89,7 @@
                 resolvePolicy: { deps: { when: "EAGER" } },
                 resolve: { 
                     customerId: function($stateParams) { return $stateParams.customerId; },
+                    customer: function($stateParams) { return $stateParams.customer; },
                     deps: lazyLoadCustomer 
                 }
             })

@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
-@Table(name = "INVOICE")
+@Table(name = "INVOICE_POSITION")
 @Data
 public class InvoicePositionBE {
     @Id
@@ -23,20 +23,21 @@ public class InvoicePositionBE {
     private Long id;
     
     @Size(max = 1024)
+    @Column(length = 1024)
     private String text;
     
-    @Size(max = 256)
+    @Size(max = 255)
     private String label;
 
     @Column(name = "material_number")
-    @Size(max = 256)
+    @Size(max = 255)
     private String materialNumber;
     
-    @Column(precision = 0, scale = 3)
+    @Column(precision = 3, scale = 0)
     @Min(1) @Max(999)
     private int quantity = 1;
 
-    @Column(precision = 1, scale = 3)
+    @Column(precision = 4, scale = 3)
     @NotNull
     private BigDecimal tax = new BigDecimal(0.19f);
 

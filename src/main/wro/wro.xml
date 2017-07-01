@@ -6,10 +6,10 @@
         <js minimize="false">webjar:angular.js</js>
         <js minimize="false">webjar:angular-animate.min.js</js>
         <js minimize="false">webjar:angular-aria.min.js</js>
-        <js minimize="false">webjar:angular-route.min.js</js>
-        <js minimize="false">webjar:angular-resource.min.js</js>
+        <js minimize="false">webjar:angular-route.js</js>
+        <js minimize="false">webjar:angular-resource.js</js>
         <js minimize="false">webjar:angular-cookies.min.js</js>
-        <js minimize="false">webjar:angular-ui-router.min.js</js>
+        <js minimize="false">webjar:angular-ui-router.js</js>
         
         <js minimize="false">webjar:dist/angular-breadcrumb.js</js>
         <js minimize="false">webjar:loading-bar.js</js>
