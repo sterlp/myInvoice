@@ -84,6 +84,11 @@
                 if (!that.customer.bankDetails) that.customer.bankDetails = [];
                 that.customer.bankDetails.push({});
             };
+            this.deleteBankDetail = function(index) {
+                if (!this.customer) this.customer = {};
+                if (!that.customer.bankDetails) that.customer.bankDetails = [];
+                that.customer.bankDetails = that.customer.bankDetails.slice(1, index);
+            };
             function updateCustomer(result) {
                 that.customer = result.data ? result.data : result;
                 $breadcrumb.$getLastViewScope().pageLabel = that.customer.firstName + " " + that.customer.name;

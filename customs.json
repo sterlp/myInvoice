@@ -9,6 +9,9 @@
         "breadcrumb": {
             "context": "ol"
         },
+        "ui-view": {
+            "context": "div"
+        },
         "ui-sref": {}
     }
 }

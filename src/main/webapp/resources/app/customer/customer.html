@@ -11,7 +11,7 @@
                         <button ng-click="$ctrl.save()" ng-disabled="!$ctrl.customer" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o" aria-hidden="true"></i> 
                             {{ $ctrl.customer.id ? 'Save changes' : 'Create Customer' }}
                         </button>
-                        <button ng-if="$ctrl.customer.id" ng-click="$ctrl.addBankDetails()" class="btn btn-secondary btn-sm" type="button"><i class="icon-add"></i> Add Bank Details </button>
+                        <button ng-if="$ctrl.customer.id" ng-click="$ctrl.addBankDetails()" class="btn btn-secondary btn-sm" type="button"><i class="icon-add"></i> Add Bank Account</button>
                         <button ng-if="$ctrl.customer.id" ng-click="$ctrl.reload()" class="btn btn-secondary btn-sm" type="button"><i class="icon-reload"></i> Reload</button>
                     </div>
                 </div>
@@ -20,7 +20,6 @@
     </div>
         
     <jsui-messages></jsui-messages>
-    
 
     <div class="row">
         <div class="col-md-6">
@@ -138,8 +137,52 @@
             <div class="card">
                 <div class="card-header">Bank Details</div>
                 <div class="card-block">
-                    <h4 class="card-title">Bank Details</h4>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-3">Owner Name</label>
+                                <div class="col-md-9">
+                                    <input ng-model="bankDetail.ownerName" type="text" class="form-control" placeholder="Bank account owner">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-3">Label</label>
+                                <div class="col-md-9">
+                                    <input ng-model="bankDetail.label" type="text" class="form-control" placeholder="Lable or tag ...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-3">IBAN</label>
+                                <div class="col-md-9">
+                                    <input ng-model="bankDetail.iban" jsui-validate="BankDetailsBE.iban" type="text" class="form-control" placeholder="IBAN">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-3">BIC / SWIFT</label>
+                                <div class="col-md-9">
+                                    <input ng-model="bankDetail.bic" jsui-validate="BankDetailsBE.bic" type="text" class="form-control" placeholder="BIC">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+                <div class="card-footer">
+                    <button ng-click="$ctrl.addBankDetails()" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Add Bank Account</button>
+                    <button ng-click="$ctrl.deleteBankDetail($index)" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Delete</button>
                 </div>
             </div>
         </div>

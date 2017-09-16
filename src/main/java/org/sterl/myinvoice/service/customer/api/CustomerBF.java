@@ -47,7 +47,7 @@ public class CustomerBF {
     
     @PUT
     @Path("/{userId}")
-    public CustomerBE update(@PathParam("userId") long userId, CustomerBE customer) {
+    public CustomerBE update(@PathParam("userId") long userId, @Valid CustomerBE customer) {
         customer.setId(userId);
         return customerDao.update(customer);
     }
